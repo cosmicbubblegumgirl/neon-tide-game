@@ -19,8 +19,11 @@
     <main class="hud" aria-live="polite">
       <header class="topbar">
         <section class="brand" aria-label="Neon Tide status">
-          <span class="brand-mark">Neon Tide</span>
-          <span id="districtLabel" class="subline">Blizzard Bay</span>
+          <img class="game-icon" src="assets/icon.svg" alt="" aria-hidden="true">
+          <span class="brand-copy">
+            <span class="brand-mark">Neon Tide</span>
+            <span id="districtLabel" class="subline">Blizzard Bay</span>
+          </span>
         </section>
         <section class="meters" aria-label="Player meters">
           <span class="meter"><b id="credits">0</b><small>credits</small></span>
@@ -79,10 +82,12 @@
         <button data-action="tutorial">Tutorial</button>
       </nav>
 
-      <section class="mobile-stick" aria-label="Touch steering">
-        <button data-steer="left">Left</button>
-        <button data-steer="forward">Forward</button>
-        <button data-steer="right">Right</button>
+      <section class="joystick-panel" aria-label="Steer">
+        <span class="joystick-title">Steer</span>
+        <div id="joystick" class="joystick" role="application" aria-label="Steer the trawler">
+          <span class="joystick-grid"></span>
+          <span id="joystickKnob" class="joystick-knob"></span>
+        </div>
       </section>
     </main>
 
@@ -120,6 +125,34 @@
       </nav>
       <section id="dockContent" class="dock-content"></section>
     </dialog>
+
+    <section id="catchReveal" class="catch-reveal" aria-live="assertive" aria-hidden="true">
+      <div class="catch-stage">
+        <div class="catch-avatar" aria-hidden="true">
+          <span class="avatar-glow"></span>
+          <span class="avatar-head"></span>
+          <span class="avatar-hair"></span>
+          <span class="avatar-body"></span>
+          <span class="avatar-arm arm-left"></span>
+          <span class="avatar-arm arm-right"></span>
+          <span id="catchFishVisual" class="held-fish">
+            <span class="fish-tail"></span>
+            <span class="fish-body"></span>
+            <span class="fish-eye"></span>
+            <span class="fish-fin fin-top"></span>
+            <span class="fish-fin fin-bottom"></span>
+            <span class="fish-spark spark-a"></span>
+            <span class="fish-spark spark-b"></span>
+          </span>
+        </div>
+        <article class="catch-card">
+          <p class="eyebrow">Catch Secured</p>
+          <h2 id="catchFishName">Static Stingray Prime</h2>
+          <p id="catchFishMeta">Rare / Neon Harbor / 0 credits</p>
+          <button data-action="catch-close">Keep Fishing</button>
+        </article>
+      </div>
+    </section>
 
     <section id="toast" class="toast" aria-live="assertive"></section>
 

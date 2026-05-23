@@ -39,7 +39,7 @@
   const tutorialCards = [
     {
       title: "Wake The Trawler",
-      text: "Use WASD, arrows, or the touch steering buttons to move Blizzard's boat through the flooded districts."
+      text: "Use WASD, arrows, or the mobile joystick to steer Blizzard's boat through the flooded districts."
     },
     {
       title: "Cast Into The Glow",
@@ -61,7 +61,7 @@
 
   const saveKey = "neon-tide-save-v1";
   const keys = new Set();
-  const steer = { left: false, right: false, forward: false };
+  const steer = { left: false, right: false, forward: false, turn: 0, thrust: 0, active: false };
   const ui = {};
 
   const state = {
@@ -156,6 +156,12 @@
     requestAnimationFrame(frame);
 
     if (!state.tutorialDone) openModal(ui.tutorial);
+    if (new URLSearchParams(window.location.search).has("demoCatch")) {
+      const sample = fishData.find((item) => item.rarity === "Legendary") || fishData[0];
+      window.setTimeout(() => {
+        showCatchReveal({ ...sample, value: fishValue(sample) });
+      }, 900);
+    }
     if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
       navigator.serviceWorker.register("sw.js").catch(() => {});
     }
@@ -179,6 +185,12 @@
     ui.missionText = document.querySelector("#missionText");
     ui.eventLog = document.querySelector("#eventLog");
     ui.toast = document.querySelector("#toast");
+    ui.catchReveal = document.querySelector("#catchReveal");
+    ui.catchFishVisual = document.querySelector("#catchFishVisual");
+    ui.catchFishName = document.querySelector("#catchFishName");
+    ui.catchFishMeta = document.querySelector("#catchFishMeta");
+    ui.joystick = document.querySelector("#joystick");
+    ui.joystickKnob = document.querySelector("#joystickKnob");
     ui.tutorial = document.querySelector("#tutorial");
     ui.tutorialTitle = document.querySelector("#tutorialTitle");
     ui.tutorialText = document.querySelector("#tutorialText");
@@ -204,16 +216,7 @@
       if (event.key === " ") state.reeling = false;
     });
 
-    document.querySelectorAll("[data-steer]").forEach((button) => {
-      const dir = button.dataset.steer;
-      const set = (value) => {
-        steer[dir] = value;
-      };
-      button.addEventListener("pointerdown", () => set(true));
-      button.addEventListener("pointerup", () => set(false));
-      button.addEventListener("pointerleave", () => set(false));
-      button.addEventListener("pointercancel", () => set(false));
-    });
+    setupJoystick();
 
     const reelButton = document.querySelector("#reelButton");
     ["pointerdown", "touchstart"].forEach((eventName) => {
@@ -227,6 +230,54 @@
         state.reeling = false;
       });
     });
+  }
+
+  function setupJoystick() {
+    if (!ui.joystick || !ui.joystickKnob) return;
+    const max = 38;
+
+    function reset() {
+      steer.active = false;
+      steer.turn = 0;
+      steer.thrust = 0;
+      steer.left = false;
+      steer.right = false;
+      steer.forward = false;
+      ui.joystickKnob.style.transform = "translate(-50%, -50%)";
+    }
+
+    function update(event) {
+      const rect = ui.joystick.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const rawX = event.clientX - cx;
+      const rawY = event.clientY - cy;
+      const distance = Math.min(max, Math.hypot(rawX, rawY));
+      const angle = Math.atan2(rawY, rawX);
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+      const nx = x / max;
+      const ny = y / max;
+      steer.active = true;
+      steer.turn = clamp(nx, -1, 1);
+      steer.thrust = clamp(-ny, -0.65, 1);
+      steer.left = steer.turn < -0.2;
+      steer.right = steer.turn > 0.2;
+      steer.forward = steer.thrust > 0.15;
+      ui.joystickKnob.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+      event.preventDefault();
+    }
+
+    ui.joystick.addEventListener("pointerdown", (event) => {
+      ui.joystick.setPointerCapture(event.pointerId);
+      update(event);
+    });
+    ui.joystick.addEventListener("pointermove", (event) => {
+      if (steer.active) update(event);
+    });
+    ui.joystick.addEventListener("pointerup", reset);
+    ui.joystick.addEventListener("pointercancel", reset);
+    ui.joystick.addEventListener("lostpointercapture", reset);
   }
 
   function setupActions() {
@@ -257,6 +308,7 @@
     if (action === "tutorial-prev") setTutorial(state.tutorialIndex - 1);
     if (action === "tutorial-next") setTutorial(state.tutorialIndex + 1);
     if (action === "tutorial-close") closeTutorial();
+    if (action === "catch-close") hideCatchReveal();
     if (action === "invest") invest(button.dataset.business);
     if (action === "upgrade") buyUpgrade(button.dataset.upgrade);
     if (action === "talk") talkQuantum(button.dataset.choice);
@@ -271,16 +323,18 @@
   }
 
   function updateBoat(dt) {
-    const forward = keys.has("w") || keys.has("arrowup") || steer.forward;
+    const forward = keys.has("w") || keys.has("arrowup");
     const reverse = keys.has("s") || keys.has("arrowdown");
-    const left = keys.has("a") || keys.has("arrowleft") || steer.left;
-    const right = keys.has("d") || keys.has("arrowright") || steer.right;
+    const left = keys.has("a") || keys.has("arrowleft");
+    const right = keys.has("d") || keys.has("arrowright");
     const turnSpeed = 1.95 + upgradeLevel("hull") * 0.08;
+    const digitalTurn = (left ? 1 : 0) - (right ? 1 : 0);
+    const turnInput = clamp(digitalTurn - steer.turn, -1, 1);
 
-    if (left) state.boat.rot += turnSpeed * dt;
-    if (right) state.boat.rot -= turnSpeed * dt;
+    if (Math.abs(turnInput) > 0.04) state.boat.rot += turnSpeed * turnInput * dt;
 
-    const target = forward ? 5.2 : reverse ? -2.4 : 0;
+    const joystickTarget = Math.abs(steer.thrust) > 0.08 ? steer.thrust * 5.2 : 0;
+    const target = forward ? 5.2 : reverse ? -2.4 : joystickTarget;
     state.boat.speed += (target - state.boat.speed) * Math.min(1, dt * 3.4);
     state.boat.x += Math.sin(state.boat.rot) * state.boat.speed * dt;
     state.boat.z += Math.cos(state.boat.rot) * state.boat.speed * dt;
@@ -406,6 +460,7 @@
     if (fish.rarity === "Legendary") state.heat += 1;
     addLog(`Caught ${fish.name}. ${fish.rarity}. ${value} credits market value.`);
     toast(`Caught ${fish.name}`);
+    showCatchReveal(catchItem);
     state.cast = null;
     state.reeling = false;
     saveProgress();
@@ -736,6 +791,32 @@
     toast.timer = setTimeout(() => ui.toast.classList.remove("show"), 2200);
   }
 
+  function showCatchReveal(fish) {
+    if (!ui.catchReveal || !ui.catchFishVisual) return;
+    const color = rarityColor(fish.rarity);
+    const accent = fish.rarity === "Legendary" ? "#ff4dbd" : fish.rarity === "Epic" ? "#58ffb2" : "#35d9ff";
+    ui.catchFishName.textContent = fish.name;
+    ui.catchFishMeta.textContent = `${fish.rarity} / ${fish.habitat} / ${fish.value} credits`;
+    ui.catchReveal.style.setProperty("--fish-color", color);
+    ui.catchReveal.style.setProperty("--fish-accent", accent);
+    ui.catchReveal.style.setProperty("--fish-glow", `${hexToRgba(color, 0.46)}`);
+    ui.catchFishVisual.dataset.variant = String(fish.id % 7);
+    ui.catchFishVisual.dataset.rarity = fish.rarity;
+    ui.catchReveal.setAttribute("aria-hidden", "false");
+    ui.catchReveal.classList.remove("show");
+    ui.catchReveal.offsetHeight;
+    ui.catchReveal.classList.add("show");
+    clearTimeout(showCatchReveal.timer);
+    showCatchReveal.timer = setTimeout(hideCatchReveal, 4200);
+  }
+
+  function hideCatchReveal() {
+    if (!ui.catchReveal) return;
+    ui.catchReveal.classList.remove("show");
+    ui.catchReveal.setAttribute("aria-hidden", "true");
+    clearTimeout(showCatchReveal.timer);
+  }
+
   function upgradeLevel(id) {
     return state.upgrades.find((item) => item.id === id)?.level || 0;
   }
@@ -753,6 +834,25 @@
     const marketBonus = 1 + businessLevel("ramen") * 0.08 + businessLevel("market") * 0.12;
     const risk = districts.find((district) => district.habitat === fish.habitat)?.risk || 1;
     return Math.round(base * marketBonus * risk);
+  }
+
+  function rarityColor(rarity) {
+    return {
+      Common: "#d5f7ff",
+      Uncommon: "#58ffb2",
+      Rare: "#35d9ff",
+      Epic: "#b474ff",
+      Legendary: "#ffcb57"
+    }[rarity] || "#35d9ff";
+  }
+
+  function hexToRgba(hex, alpha) {
+    const clean = hex.replace("#", "");
+    const value = Number.parseInt(clean, 16);
+    const r = (value >> 16) & 255;
+    const g = (value >> 8) & 255;
+    const b = value & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
   function rarityRep(rarity) {
@@ -1151,6 +1251,6 @@
     };
   }
 
-  window.NeonTide = { state, districts, fishData };
+  window.NeonTide = { state, districts, fishData, showCatchReveal };
   init();
 })();

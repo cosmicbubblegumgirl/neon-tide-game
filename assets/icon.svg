@@ -5,6 +5,11 @@
       <stop offset=".45" stop-color="#30d5ff"/>
       <stop offset="1" stop-color="#58ffb2"/>
     </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071018"/>
+      <stop offset=".58" stop-color="#0a2f3a"/>
+      <stop offset="1" stop-color="#05121b"/>
+    </linearGradient>
     <filter id="glow">
       <feGaussianBlur stdDeviation="8" result="blur"/>
       <feMerge>
@@ -13,9 +18,15 @@
       </feMerge>
     </filter>
   </defs>
-  <rect width="512" height="512" rx="96" fill="#071018"/>
-  <path d="M74 290c78-116 206-150 360-102-62 106-186 152-360 102Z" fill="none" stroke="url(#g)" stroke-width="24" filter="url(#glow)"/>
-  <path d="M370 185l70-56-18 86 50 66-90-18" fill="none" stroke="#ff4dbd" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="222" cy="244" r="21" fill="#30d5ff" filter="url(#glow)"/>
-  <path d="M108 349c88 34 194 34 300-8" fill="none" stroke="#58ffb2" stroke-width="18" stroke-linecap="round" opacity=".8"/>
+  <rect width="512" height="512" rx="104" fill="url(#water)"/>
+  <circle cx="256" cy="256" r="176" fill="none" stroke="#153748" stroke-width="22"/>
+  <circle cx="256" cy="256" r="176" fill="none" stroke="url(#g)" stroke-width="8" stroke-dasharray="36 22" filter="url(#glow)"/>
+  <path d="M122 313c66-84 168-114 292-72-53 78-151 111-292 72Z" fill="#071018" stroke="url(#g)" stroke-width="18" filter="url(#glow)"/>
+  <path d="M356 237l68-49-18 73 47 56-82-13" fill="#071018" stroke="#ff4dbd" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="229" cy="276" r="16" fill="#30d5ff" filter="url(#glow)"/>
+  <path d="M174 355c56 18 115 20 178 4" fill="none" stroke="#58ffb2" stroke-width="16" stroke-linecap="round"/>
+  <path d="M188 180h92l43 58H139l49-58Z" fill="#0a1924" stroke="#30d5ff" stroke-width="13" stroke-linejoin="round" filter="url(#glow)"/>
+  <path d="M208 160l28-38 32 38" fill="none" stroke="#ffcb57" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M256 80v55M256 377v55M80 256h55M377 256h55" fill="none" stroke="#ff4dbd" stroke-width="10" stroke-linecap="round"/>
+  <path d="M160 410c65 28 142 29 218 0" fill="none" stroke="#30d5ff" stroke-width="12" stroke-linecap="round" opacity=".8"/>
 </svg>

@@ -120,6 +120,21 @@ button.primary,
   min-width: 230px;
   border-radius: 8px;
   padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.game-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(53, 217, 255, 0.32);
+}
+
+.brand-copy {
+  min-width: 0;
 }
 
 .brand-mark {
@@ -415,8 +430,79 @@ h3 {
   backdrop-filter: blur(12px);
 }
 
-.mobile-stick {
+.joystick-panel {
   display: none;
+}
+
+.joystick {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  border: 1px solid rgba(112, 221, 255, 0.46);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(88, 255, 178, 0.12), rgba(3, 11, 18, 0.78) 66%),
+    linear-gradient(135deg, rgba(255, 77, 189, 0.18), rgba(53, 217, 255, 0.16));
+  box-shadow: inset 0 0 28px rgba(53, 217, 255, 0.16), 0 0 24px rgba(0, 0, 0, 0.46);
+  touch-action: none;
+}
+
+.joystick-grid,
+.joystick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+.joystick-grid {
+  width: 84px;
+  height: 84px;
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+}
+
+.joystick-grid::before,
+.joystick-grid::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.joystick-grid::before {
+  left: 50%;
+  top: -12px;
+  width: 1px;
+  height: 108px;
+}
+
+.joystick-grid::after {
+  left: -12px;
+  top: 50%;
+  width: 108px;
+  height: 1px;
+}
+
+.joystick-knob {
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(255, 255, 255, 0.38);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pink), var(--cyan));
+  box-shadow: 0 0 24px rgba(255, 77, 189, 0.5);
+  transition: transform 90ms ease;
+}
+
+.joystick-title {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--cyan);
+  font-size: 0.74rem;
+  font-weight: 950;
+  text-align: center;
+  text-shadow: 0 0 12px rgba(53, 217, 255, 0.7);
+  text-transform: uppercase;
 }
 
 .toast {
@@ -440,6 +526,289 @@ h3 {
 .toast.show {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
+}
+
+.catch-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(18px) scale(0.96);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.catch-reveal.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.catch-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 300px minmax(260px, 420px);
+  gap: 18px;
+  align-items: center;
+  width: min(760px, calc(100vw - 28px));
+  min-height: 292px;
+  border: 1px solid rgba(112, 221, 255, 0.34);
+  border-radius: 8px;
+  padding: 18px;
+  overflow: hidden;
+  pointer-events: auto;
+  background:
+    linear-gradient(115deg, rgba(4, 14, 22, 0.98), rgba(7, 31, 43, 0.82)),
+    url("assets/neon-tide-systems-board.png") center / cover no-repeat;
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.62);
+}
+
+.catch-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 35% 44%, var(--fish-glow, rgba(53, 217, 255, 0.22)), transparent 34%);
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.catch-avatar,
+.catch-card {
+  position: relative;
+  z-index: 1;
+}
+
+.catch-avatar {
+  height: 256px;
+  transform-origin: 50% 100%;
+  animation: avatar-lift 850ms cubic-bezier(.2, .9, .2, 1.1) both;
+}
+
+.avatar-glow,
+.avatar-head,
+.avatar-hair,
+.avatar-body,
+.avatar-arm,
+.held-fish {
+  position: absolute;
+  left: 50%;
+}
+
+.avatar-glow {
+  width: 210px;
+  height: 210px;
+  bottom: 8px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--fish-glow, rgba(53, 217, 255, 0.34)), transparent 68%);
+  filter: blur(4px);
+}
+
+.avatar-head {
+  top: 22px;
+  width: 72px;
+  height: 78px;
+  transform: translateX(-50%);
+  border-radius: 46% 46% 42% 42%;
+  background: linear-gradient(135deg, #9a654f, #d49a76);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+}
+
+.avatar-hair {
+  top: 12px;
+  width: 92px;
+  height: 54px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 34% 34%;
+  background:
+    radial-gradient(circle at 18% 42%, #171016 0 10px, transparent 11px),
+    radial-gradient(circle at 38% 20%, #20151d 0 13px, transparent 14px),
+    radial-gradient(circle at 61% 25%, #120c12 0 12px, transparent 13px),
+    radial-gradient(circle at 82% 45%, #241721 0 9px, transparent 10px);
+}
+
+.avatar-body {
+  bottom: 0;
+  width: 132px;
+  height: 152px;
+  transform: translateX(-50%);
+  border-radius: 42px 42px 12px 12px;
+  background: linear-gradient(145deg, #171d25, #2a2030 46%, #071018 100%);
+  border: 2px solid rgba(255, 77, 189, 0.34);
+  box-shadow: inset 0 0 24px rgba(53, 217, 255, 0.18);
+}
+
+.avatar-body::after {
+  content: "";
+  position: absolute;
+  inset: 18px 38px auto;
+  height: 78px;
+  border-radius: 999px;
+  border-left: 3px solid rgba(255, 77, 189, 0.9);
+  border-right: 3px solid rgba(53, 217, 255, 0.76);
+}
+
+.avatar-arm {
+  top: 114px;
+  width: 108px;
+  height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2c202b, #8a5a4d);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transform-origin: 8px 50%;
+}
+
+.arm-left {
+  margin-left: -107px;
+  transform: rotate(20deg);
+}
+
+.arm-right {
+  margin-left: -2px;
+  transform: rotate(160deg);
+}
+
+.held-fish {
+  --fish-length: 164px;
+  --fish-height: 60px;
+  --stripe-angle: 45deg;
+  top: 86px;
+  width: var(--fish-length);
+  height: var(--fish-height);
+  transform: translateX(-50%) rotate(-5deg);
+  animation: fish-show 920ms 120ms cubic-bezier(.2, .9, .2, 1.1) both, fish-hover 1550ms 980ms ease-in-out infinite;
+  filter: drop-shadow(0 0 16px var(--fish-glow, rgba(53, 217, 255, 0.75)));
+}
+
+.fish-body {
+  position: absolute;
+  inset: 8px 34px 8px 16px;
+  border-radius: 55% 48% 48% 55%;
+  background:
+    repeating-linear-gradient(var(--stripe-angle), rgba(255, 255, 255, 0.22) 0 5px, transparent 5px 16px),
+    linear-gradient(90deg, var(--fish-color, #35d9ff), var(--fish-accent, #ff4dbd));
+  border: 2px solid rgba(255, 255, 255, 0.34);
+}
+
+.fish-body::after {
+  content: "";
+  position: absolute;
+  inset: 48% -12px auto auto;
+  width: 32px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.fish-tail {
+  position: absolute;
+  right: 0;
+  top: 8px;
+  width: 44px;
+  height: 45px;
+  clip-path: polygon(0 50%, 100% 0, 74% 50%, 100% 100%);
+  background: var(--fish-accent, #ff4dbd);
+}
+
+.fish-eye {
+  position: absolute;
+  left: 32px;
+  top: 23px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #061018;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+.fish-fin {
+  position: absolute;
+  left: 76px;
+  width: var(--fish-fin, 38px);
+  height: 24px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background: rgba(255, 255, 255, 0.36);
+}
+
+.fin-top {
+  top: 0;
+  transform: rotate(-34deg);
+}
+
+.fin-bottom {
+  bottom: 0;
+  transform: rotate(34deg);
+}
+
+.fish-spark {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 20px var(--fish-glow, rgba(53, 217, 255, 0.8));
+  animation: spark-pop 900ms ease-in-out infinite;
+}
+
+.spark-a {
+  left: 8px;
+  top: -8px;
+}
+
+.spark-b {
+  right: 12px;
+  bottom: -8px;
+  animation-delay: 420ms;
+}
+
+.held-fish[data-variant="1"] { --fish-length: 142px; --fish-fin: 28px; --stripe-angle: 70deg; }
+.held-fish[data-variant="2"] { --fish-length: 184px; --fish-height: 52px; --fish-fin: 44px; --stripe-angle: 25deg; }
+.held-fish[data-variant="3"] { --fish-length: 156px; --fish-height: 72px; --fish-fin: 50px; --stripe-angle: 115deg; }
+.held-fish[data-variant="4"] { --fish-length: 196px; --fish-height: 58px; --fish-fin: 30px; --stripe-angle: 135deg; }
+.held-fish[data-variant="5"] { --fish-length: 132px; --fish-height: 66px; --fish-fin: 34px; --stripe-angle: 10deg; }
+.held-fish[data-variant="6"] { --fish-length: 176px; --fish-height: 74px; --fish-fin: 46px; --stripe-angle: 92deg; }
+
+.catch-card {
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(3, 11, 18, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.catch-card h2 {
+  color: var(--fish-color, var(--cyan));
+  text-shadow: 0 0 18px var(--fish-glow, rgba(53, 217, 255, 0.55));
+}
+
+.catch-card p:not(.eyebrow) {
+  color: #d8f7ff;
+}
+
+@keyframes avatar-lift {
+  0% { transform: translateY(42px) scale(0.92); opacity: 0; }
+  62% { transform: translateY(-8px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes fish-show {
+  0% { transform: translateX(-50%) translateY(52px) rotate(-22deg) scale(0.52); opacity: 0; }
+  70% { transform: translateX(-50%) translateY(-8px) rotate(3deg) scale(1.06); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(0) rotate(-5deg) scale(1); opacity: 1; }
+}
+
+@keyframes fish-hover {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
+  50% { transform: translateX(-50%) translateY(-8px) rotate(4deg); }
+}
+
+@keyframes spark-pop {
+  0%, 100% { transform: scale(0.4); opacity: 0.35; }
+  50% { transform: scale(1.28); opacity: 1; }
 }
 
 dialog {
@@ -629,6 +998,13 @@ dialog {
 
   .brand {
     min-width: 166px;
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .game-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
   }
 
   .brand-mark {
@@ -653,7 +1029,7 @@ dialog {
   }
 }
 
-@media (max-width: 740px), (max-height: 540px) {
+@media (pointer: coarse), (max-width: 740px), (max-height: 540px) {
   body {
     overflow: hidden;
   }
@@ -665,6 +1041,13 @@ dialog {
   .brand {
     min-width: 138px;
     padding: 9px 10px;
+    grid-template-columns: 36px minmax(0, 1fr);
+  }
+
+  .game-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
   }
 
   .subline,
@@ -690,13 +1073,13 @@ dialog {
 
   .left-stack {
     top: auto;
-    bottom: 82px;
-    left: 10px;
-    width: min(282px, calc(100vw - 150px));
+    bottom: 78px;
+    left: 146px;
+    width: clamp(136px, calc(100vw - 298px), 270px);
   }
 
   .mission-panel {
-    padding: 10px;
+    display: none;
   }
 
   .catch-panel {
@@ -739,19 +1122,86 @@ dialog {
     font-size: 0.78rem;
   }
 
-  .mobile-stick {
+  .joystick-panel {
     position: absolute;
-    right: 10px;
+    left: 10px;
     bottom: 66px;
     display: grid;
-    grid-template-columns: repeat(3, 54px);
-    gap: 5px;
+    justify-items: center;
+    padding: 8px;
+    border: 1px solid rgba(112, 221, 255, 0.24);
+    border-radius: 8px;
+    background: rgba(2, 9, 15, 0.48);
+    backdrop-filter: blur(10px);
   }
 
-  .mobile-stick button {
-    min-height: 38px;
-    padding: 0;
-    font-size: 0.66rem;
+  .catch-stage {
+    grid-template-columns: 1fr;
+    width: min(420px, calc(100vw - 20px));
+    min-height: 0;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .catch-avatar {
+    height: 186px;
+  }
+
+  .avatar-head {
+    top: 10px;
+    width: 56px;
+    height: 61px;
+  }
+
+  .avatar-hair {
+    top: 2px;
+    width: 74px;
+  }
+
+  .avatar-body {
+    width: 104px;
+    height: 116px;
+  }
+
+  .avatar-arm {
+    top: 82px;
+    width: 82px;
+  }
+
+  .arm-left {
+    margin-left: -82px;
+  }
+
+  .held-fish {
+    top: 60px;
+    transform: translateX(-50%) scale(0.84) rotate(-5deg);
+  }
+
+  .catch-card {
+    padding: 12px;
+  }
+
+  .joystick {
+    width: 104px;
+    height: 104px;
+  }
+
+  .joystick-grid {
+    width: 72px;
+    height: 72px;
+  }
+
+  .joystick-grid::before {
+    height: 94px;
+  }
+
+  .joystick-grid::after {
+    width: 94px;
+  }
+
+  .joystick-knob {
+    width: 42px;
+    height: 42px;
   }
 
   .modal-grid {

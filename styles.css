@@ -1,0 +1,768 @@
+:root {
+  color-scheme: dark;
+  --ink: #ecfbff;
+  --muted: #93b8c4;
+  --panel: rgba(5, 18, 27, 0.78);
+  --panel-strong: rgba(7, 26, 38, 0.94);
+  --edge: rgba(112, 221, 255, 0.28);
+  --cyan: #35d9ff;
+  --pink: #ff4dbd;
+  --green: #58ffb2;
+  --gold: #ffcb57;
+  --red: #ff5b6d;
+  --violet: #b474ff;
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+  font-family: Inter, Rajdhani, "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #071018;
+  color: var(--ink);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 18, 27, 0.64), rgba(10, 25, 31, 0.18), rgba(4, 7, 16, 0.72)),
+    url("assets/neon-tide-story-board.png") center / cover no-repeat;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+button {
+  min-height: 42px;
+  border: 1px solid rgba(112, 221, 255, 0.32);
+  border-radius: 8px;
+  padding: 0 14px;
+  background: rgba(10, 33, 47, 0.9);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+button:hover,
+button:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(88, 255, 178, 0.8);
+  outline: none;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button.primary,
+.tabs button.active {
+  background: linear-gradient(135deg, rgba(255, 77, 189, 0.95), rgba(48, 213, 255, 0.88));
+  border-color: transparent;
+  color: #061018;
+}
+
+#world {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(53, 217, 255, 0.12), transparent 34%),
+    linear-gradient(#061018, #07131d 48%, #061018);
+}
+
+.hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hud > * {
+  pointer-events: auto;
+}
+
+.topbar {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  right: max(14px, env(safe-area-inset-right));
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.brand,
+.mission-panel,
+.catch-panel,
+.compass-card,
+.dock-modal,
+.tutorial-modal {
+  border: 1px solid var(--edge);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.brand {
+  min-width: 230px;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.brand-mark {
+  display: block;
+  color: var(--pink);
+  font-size: clamp(1.6rem, 3vw, 3.2rem);
+  line-height: 0.9;
+  font-weight: 950;
+  text-transform: uppercase;
+  text-shadow: 0 0 22px rgba(255, 77, 189, 0.75);
+}
+
+.subline,
+.eyebrow,
+small {
+  color: var(--muted);
+}
+
+.subline {
+  display: block;
+  margin-top: 8px;
+  font-weight: 800;
+}
+
+.meters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(84px, 1fr));
+  gap: 8px;
+  max-width: min(560px, 56vw);
+}
+
+.meter {
+  min-height: 58px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(5, 18, 27, 0.76);
+}
+
+.meter b,
+.meter small {
+  display: block;
+}
+
+.meter b {
+  color: var(--green);
+  font-size: clamp(1rem, 2vw, 1.45rem);
+}
+
+.meter small {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.left-stack {
+  position: absolute;
+  top: 132px;
+  left: max(14px, env(safe-area-inset-left));
+  width: min(390px, 32vw);
+  display: grid;
+  gap: 10px;
+}
+
+.mission-panel,
+.catch-panel {
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.05;
+}
+
+h1 {
+  margin-bottom: 8px;
+  color: var(--cyan);
+  font-size: clamp(1.35rem, 3vw, 2.4rem);
+}
+
+h2 {
+  margin-bottom: 8px;
+  color: var(--cyan);
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+h3 {
+  margin-bottom: 6px;
+  font-size: 1.02rem;
+}
+
+.mission-panel p:not(.eyebrow) {
+  color: #d8f7ff;
+  line-height: 1.45;
+}
+
+.event-log {
+  display: grid;
+  gap: 6px;
+  max-height: 132px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.event-log div {
+  border-left: 3px solid var(--pink);
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #cff8ff;
+  font-size: 0.85rem;
+}
+
+.tension-shell {
+  position: relative;
+  height: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(112, 221, 255, 0.36);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.sweet-spot {
+  position: absolute;
+  inset: 0 18% 0 46%;
+  background: linear-gradient(90deg, rgba(88, 255, 178, 0.2), rgba(255, 203, 87, 0.34));
+}
+
+.tension-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: linear-gradient(90deg, var(--cyan), var(--green), var(--gold), var(--red));
+  box-shadow: 0 0 24px rgba(53, 217, 255, 0.45);
+}
+
+.cast-readout {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.compass-card {
+  position: absolute;
+  top: 128px;
+  right: max(14px, env(safe-area-inset-right));
+  width: min(328px, 28vw);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.compass {
+  position: relative;
+  width: min(248px, 100%);
+  aspect-ratio: 1;
+  margin: 0 auto 12px;
+  border: 2px solid rgba(53, 217, 255, 0.48);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(88, 255, 178, 0.18) 0 3px, transparent 4px),
+    radial-gradient(circle, rgba(53, 217, 255, 0.08), rgba(0, 0, 0, 0.56) 62%);
+  box-shadow: inset 0 0 34px rgba(53, 217, 255, 0.18), 0 0 28px rgba(53, 217, 255, 0.12);
+}
+
+.cardinal,
+.needle,
+.sonar-ping,
+.compass-core {
+  position: absolute;
+}
+
+.cardinal {
+  color: var(--cyan);
+  font-weight: 950;
+  text-shadow: 0 0 12px rgba(53, 217, 255, 0.8);
+}
+
+.north { top: 8px; left: 50%; transform: translateX(-50%); }
+.east { right: 12px; top: 50%; transform: translateY(-50%); }
+.south { bottom: 8px; left: 50%; transform: translateX(-50%); }
+.west { left: 12px; top: 50%; transform: translateY(-50%); }
+
+.needle {
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 43%;
+  transform-origin: 50% 100%;
+  transform: translate(-50%, -100%) rotate(0deg);
+  border-radius: 999px;
+  background: linear-gradient(var(--pink), var(--cyan));
+  box-shadow: 0 0 14px rgba(255, 77, 189, 0.8);
+}
+
+.sonar-ping {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 18px var(--green);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+.ping-a { top: 28%; left: 29%; }
+.ping-b { top: 61%; left: 66%; animation-delay: 420ms; background: var(--gold); box-shadow: 0 0 18px var(--gold); }
+.ping-c { top: 47%; left: 19%; animation-delay: 840ms; background: var(--pink); box-shadow: 0 0 18px var(--pink); }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(0.72); opacity: 0.48; }
+  50% { transform: scale(1.24); opacity: 1; }
+}
+
+.compass-core {
+  inset: 34%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  border-radius: 50%;
+  background: rgba(3, 11, 18, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.compass-core strong,
+.compass-core small {
+  max-width: 9ch;
+}
+
+.compass-core strong {
+  color: var(--green);
+  font-size: 0.88rem;
+}
+
+.inventory-strip {
+  min-height: 148px;
+}
+
+.inventory-strip ul {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.inventory-strip li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.84rem;
+}
+
+.inventory-strip li span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-bar {
+  position: absolute;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(96px, 1fr));
+  gap: 8px;
+  width: min(760px, calc(100vw - 28px));
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(2, 9, 15, 0.68);
+  backdrop-filter: blur(12px);
+}
+
+.mobile-stick {
+  display: none;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 92px;
+  z-index: 6;
+  width: min(520px, calc(100vw - 32px));
+  transform: translateX(-50%) translateY(24px);
+  opacity: 0;
+  pointer-events: none;
+  border: 1px solid rgba(88, 255, 178, 0.5);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: rgba(4, 18, 21, 0.94);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+dialog {
+  color: var(--ink);
+}
+
+.modal {
+  position: fixed;
+  inset: 50% auto auto 50%;
+  width: min(1040px, calc(100vw - 28px));
+  max-height: min(820px, calc(100vh - 28px));
+  transform: translate(-50%, -50%);
+  overflow: auto;
+  border-radius: 8px;
+  padding: 0;
+}
+
+.modal::backdrop {
+  background: rgba(1, 7, 11, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.86fr) minmax(280px, 1fr);
+  gap: 18px;
+  padding: 18px;
+  background: var(--panel-strong);
+}
+
+.art-panel {
+  min-height: 420px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.story-art {
+  background:
+    linear-gradient(rgba(2, 9, 15, 0.08), rgba(2, 9, 15, 0.38)),
+    url("assets/neon-tide-story-board.png") center / cover no-repeat;
+}
+
+.tutorial-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0;
+}
+
+.tutorial-steps span {
+  width: 38px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.tutorial-steps span.active {
+  background: var(--green);
+  box-shadow: 0 0 14px rgba(88, 255, 178, 0.7);
+}
+
+.modal-actions,
+.dock-header,
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.dock-modal {
+  background: var(--panel-strong);
+}
+
+.dock-header {
+  justify-content: space-between;
+  padding: 16px 18px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dock-header h2 {
+  margin-bottom: 0;
+}
+
+.tabs {
+  padding: 10px 18px;
+  overflow-x: auto;
+}
+
+.tabs button {
+  min-width: 116px;
+}
+
+.dock-content {
+  min-height: 420px;
+  padding: 0 18px 18px;
+}
+
+.dock-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dock-card {
+  border: 1px solid rgba(112, 221, 255, 0.22);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dock-card.hero-card {
+  grid-column: 1 / -1;
+  min-height: 180px;
+  background:
+    linear-gradient(90deg, rgba(5, 18, 27, 0.9), rgba(5, 18, 27, 0.38)),
+    url("assets/neon-tide-systems-board.png") center / cover no-repeat;
+}
+
+.dock-card p {
+  color: #cceefa;
+  line-height: 1.42;
+}
+
+.dock-card .stat-row,
+.fish-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stat-row {
+  margin: 8px 0 10px;
+  color: var(--muted);
+}
+
+.fish-list {
+  display: grid;
+  gap: 6px;
+  max-height: 312px;
+  overflow: auto;
+}
+
+.fish-row {
+  min-height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 7px 9px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.fish-row span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rarity-Common { color: #cceefa; }
+.rarity-Uncommon { color: var(--green); }
+.rarity-Rare { color: var(--green); }
+.rarity-Epic { color: var(--cyan); }
+.rarity-Legendary { color: var(--gold); }
+
+.progress-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.progress-track span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--pink), var(--cyan), var(--green));
+}
+
+@media (max-width: 980px) {
+  .topbar {
+    align-items: stretch;
+  }
+
+  .brand {
+    min-width: 166px;
+  }
+
+  .brand-mark {
+    font-size: 1.5rem;
+  }
+
+  .meters {
+    grid-template-columns: repeat(2, minmax(72px, 1fr));
+    max-width: 46vw;
+  }
+
+  .left-stack {
+    width: min(338px, 43vw);
+  }
+
+  .compass-card {
+    width: min(286px, 39vw);
+  }
+
+  .action-bar {
+    grid-template-columns: repeat(5, minmax(72px, 1fr));
+  }
+}
+
+@media (max-width: 740px), (max-height: 540px) {
+  body {
+    overflow: hidden;
+  }
+
+  .topbar {
+    gap: 8px;
+  }
+
+  .brand {
+    min-width: 138px;
+    padding: 9px 10px;
+  }
+
+  .subline,
+  .mission-panel p:not(.eyebrow),
+  .event-log {
+    display: none;
+  }
+
+  .meters {
+    grid-template-columns: repeat(4, minmax(58px, 1fr));
+    max-width: none;
+    flex: 1;
+  }
+
+  .meter {
+    min-height: 48px;
+    padding: 6px 7px;
+  }
+
+  .meter small {
+    font-size: 0.62rem;
+  }
+
+  .left-stack {
+    top: auto;
+    bottom: 82px;
+    left: 10px;
+    width: min(282px, calc(100vw - 150px));
+  }
+
+  .mission-panel {
+    padding: 10px;
+  }
+
+  .catch-panel {
+    padding: 10px;
+  }
+
+  .compass-card {
+    top: 96px;
+    right: 10px;
+    width: 128px;
+    padding: 8px;
+  }
+
+  .inventory-strip {
+    display: none;
+  }
+
+  .compass-core {
+    inset: 31%;
+  }
+
+  .compass-core strong {
+    font-size: 0.68rem;
+  }
+
+  .compass-core small {
+    font-size: 0.58rem;
+  }
+
+  .action-bar {
+    bottom: 10px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+    padding: 6px;
+  }
+
+  .action-bar button {
+    min-height: 42px;
+    padding: 0 6px;
+    font-size: 0.78rem;
+  }
+
+  .mobile-stick {
+    position: absolute;
+    right: 10px;
+    bottom: 66px;
+    display: grid;
+    grid-template-columns: repeat(3, 54px);
+    gap: 5px;
+  }
+
+  .mobile-stick button {
+    min-height: 38px;
+    padding: 0;
+    font-size: 0.66rem;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .art-panel {
+    min-height: 180px;
+  }
+
+  .dock-grid {
+    grid-template-columns: 1fr;
+  }
+}

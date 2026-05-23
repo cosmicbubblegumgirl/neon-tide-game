@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0a1f2a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Neon Tide">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Neon Tide</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="assets/icon.svg">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <canvas id="world" aria-label="3D Blizzard Bay fishing scene"></canvas>
+
+    <main class="hud" aria-live="polite">
+      <header class="topbar">
+        <section class="brand" aria-label="Neon Tide status">
+          <span class="brand-mark">Neon Tide</span>
+          <span id="districtLabel" class="subline">Blizzard Bay</span>
+        </section>
+        <section class="meters" aria-label="Player meters">
+          <span class="meter"><b id="credits">0</b><small>credits</small></span>
+          <span class="meter"><b id="trust">0%</b><small>trust</small></span>
+          <span class="meter"><b id="heat">0</b><small>heat</small></span>
+          <span class="meter"><b id="rep">0</b><small>rep</small></span>
+        </section>
+      </header>
+
+      <aside class="left-stack">
+        <section class="mission-panel">
+          <p class="eyebrow">Black Rain Log</p>
+          <h1 id="missionTitle">The Ocean Remembers</h1>
+          <p id="missionText">Blizzard and Quantum Cupcake are tracing the Abyssal Grid through mutated fish schools.</p>
+          <div id="eventLog" class="event-log"></div>
+        </section>
+        <section class="catch-panel">
+          <p class="eyebrow">Line Tension</p>
+          <div class="tension-shell">
+            <span class="sweet-spot"></span>
+            <span id="tensionFill" class="tension-fill"></span>
+          </div>
+          <div class="cast-readout">
+            <span id="castStatus">Ready to cast</span>
+            <span id="castProgress">0%</span>
+          </div>
+        </section>
+      </aside>
+
+      <aside class="compass-card" aria-label="Compass inventory">
+        <div class="compass">
+          <span class="cardinal north">N</span>
+          <span class="cardinal east">E</span>
+          <span class="cardinal south">S</span>
+          <span class="cardinal west">W</span>
+          <span id="needle" class="needle"></span>
+          <span class="sonar-ping ping-a"></span>
+          <span class="sonar-ping ping-b"></span>
+          <span class="sonar-ping ping-c"></span>
+          <div class="compass-core">
+            <strong id="habitatLabel">Neon Harbor</strong>
+            <small id="inventoryCount">0 in hold</small>
+          </div>
+        </div>
+        <div class="inventory-strip">
+          <p class="eyebrow">Inventory</p>
+          <ul id="inventoryList"></ul>
+        </div>
+      </aside>
+
+      <nav class="action-bar" aria-label="Game actions">
+        <button data-action="cast" class="primary">Cast</button>
+        <button data-action="reel" id="reelButton">Reel</button>
+        <button data-action="dock">Dock</button>
+        <button data-action="sell">Sell Hold</button>
+        <button data-action="tutorial">Tutorial</button>
+      </nav>
+
+      <section class="mobile-stick" aria-label="Touch steering">
+        <button data-steer="left">Left</button>
+        <button data-steer="forward">Forward</button>
+        <button data-steer="right">Right</button>
+      </section>
+    </main>
+
+    <dialog id="tutorial" class="modal tutorial-modal">
+      <div class="modal-grid">
+        <div class="art-panel story-art"></div>
+        <section>
+          <p class="eyebrow">Blizzard's Tutorial</p>
+          <h2 id="tutorialTitle">Wake The Trawler</h2>
+          <p id="tutorialText"></p>
+          <div class="tutorial-steps" id="tutorialSteps"></div>
+          <div class="modal-actions">
+            <button data-action="tutorial-prev">Back</button>
+            <button data-action="tutorial-next" class="primary">Next</button>
+            <button data-action="tutorial-close">Begin</button>
+          </div>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog id="dock" class="modal dock-modal">
+      <header class="dock-header">
+        <div>
+          <p class="eyebrow">The Abyss Current</p>
+          <h2>Dockside Operations</h2>
+        </div>
+        <button data-action="dock-close">Close</button>
+      </header>
+      <nav class="tabs" aria-label="Dock sections">
+        <button data-tab="market" class="active">Market</button>
+        <button data-tab="business">Business</button>
+        <button data-tab="relationship">Quantum</button>
+        <button data-tab="legacy">Legacy</button>
+        <button data-tab="collection">Fishdex</button>
+      </nav>
+      <section id="dockContent" class="dock-content"></section>
+    </dialog>
+
+    <section id="toast" class="toast" aria-live="assertive"></section>
+
+    <script src="data/fish-data.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

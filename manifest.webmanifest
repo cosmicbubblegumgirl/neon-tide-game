@@ -1,0 +1,19 @@
+{
+  "name": "Neon Tide",
+  "short_name": "Neon Tide",
+  "description": "A cyberpunk 3D fishing, business, and relationship game set in Blizzard Bay.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#071018",
+  "theme_color": "#0a1f2a",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

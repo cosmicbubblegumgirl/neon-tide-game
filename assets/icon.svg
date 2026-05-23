@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Neon Tide icon">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff4dbd"/>
+      <stop offset=".45" stop-color="#30d5ff"/>
+      <stop offset="1" stop-color="#58ffb2"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#071018"/>
+  <path d="M74 290c78-116 206-150 360-102-62 106-186 152-360 102Z" fill="none" stroke="url(#g)" stroke-width="24" filter="url(#glow)"/>
+  <path d="M370 185l70-56-18 86 50 66-90-18" fill="none" stroke="#ff4dbd" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="222" cy="244" r="21" fill="#30d5ff" filter="url(#glow)"/>
+  <path d="M108 349c88 34 194 34 300-8" fill="none" stroke="#58ffb2" stroke-width="18" stroke-linecap="round" opacity=".8"/>
+</svg>
